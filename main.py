@@ -13,9 +13,8 @@ Students.add_student(student1)
 Students.add_student(student2)
 Students.add_student(student3)
 
-Students.export_to_txt()
-
 path = '/Users/ania/Desktop/uni/plik.txt'
+Students.export_to_txt(path)
 Students.import_from_txt(path)
 
 print("Student list after import:")

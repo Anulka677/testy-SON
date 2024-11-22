@@ -1,0 +1,3 @@
+Zuzia,Wilk,present
+Kinga,Olczynska,absent
+Oliwier,Nowak,present

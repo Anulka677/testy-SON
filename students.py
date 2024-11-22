@@ -26,14 +26,12 @@ class Students:
 
     @staticmethod
     def export_to_txt(path='plik.txt'):
-        """Eksport listy studentów do pliku."""
         with open(path, 'w') as f:
             for student in Students.students:
                 f.write(f"{student['name']},{student['surname']},{student['presence']}\n")
 
     @staticmethod
-    def import_from_txt(path: str):
-        """Import listy studentów z pliku."""
+    def import_from_txt(path='plik.txt'):
         Students.students.clear()
         with open(path, 'r') as file:
             for line in file:
