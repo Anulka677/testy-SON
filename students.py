@@ -3,33 +3,45 @@ from presence import Presence
 class Students:
     students = []
 
-    def __init__(self, name: str, surname: str, presence: Presence):
+    def __init__(self, name: str, surname: str, presence: str):
         self.name = name
         self.surname = surname
         self.presence = presence
 
-    def add_student(self):
+    @classmethod
+    def add_student(cls, student):
         student_data = {
-            'name': self.name,
-            'surname': self.surname,
-            'presence': self.presence
+            'name': student.name,
+            'surname': student.surname,
+            'presence': student.presence
         }
-        Students.students.append(student_data)
+        cls.students.append(student_data)
 
-    def edit_presence(self, new_presence: Presence):
-        for student_data in Students.students:
-            if student_data['name'] == self.name and student_data['surname'] == self.surname:
+    @classmethod
+    def edit_presence(cls, student, new_presence):
+        for student_data in cls.students:
+            if student_data['name'] == student.name and student_data['surname'] == student.surname:
                 student_data['presence'] = new_presence
                 break
 
-    def export_to_txt():
-        with open('C:\\Users\\jula\\Desktop\\uni\\plik.txt', 'w') as f:
+    @staticmethod
+    def export_to_txt(path='plik.txt'):
+        """Eksport listy studentów do pliku."""
+        with open(path, 'w') as f:
             for student in Students.students:
-                f.write(str(student) + "\n")
+                f.write(f"{student['name']},{student['surname']},{student['presence']}\n")
 
-    def import_from_txt(path:str):
-        file = open(path, 'r')
-
-        for line in file.readlines():
-            data = line.strip()
-            Students.students.append(data)
+    @staticmethod
+    def import_from_txt(path: str):
+        """Import listy studentów z pliku."""
+        Students.students.clear()
+        with open(path, 'r') as file:
+            for line in file:
+                parts = line.strip().split(',')
+                if len(parts) == 3:
+                    student_data = {
+                        'name': parts[0],
+                        'surname': parts[1],
+                        'presence': parts[2]
+                    }
+                    Students.students.append(student_data)
