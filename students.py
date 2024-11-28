@@ -10,6 +10,10 @@ class Students:
 
     @classmethod
     def add_student(cls, student):
+        for existing_student in cls.students:
+            if existing_student['name'] == student.name and existing_student['surname'] == student.surname:
+                raise ValueError("Student already exists")
+
         student_data = {
             'name': student.name,
             'surname': student.surname,
@@ -22,7 +26,8 @@ class Students:
         for student_data in cls.students:
             if student_data['name'] == student.name and student_data['surname'] == student.surname:
                 student_data['presence'] = new_presence
-                break
+                return
+        raise ValueError("Student not found")
 
     @staticmethod
     def export_to_txt(path='plik.txt'):
@@ -36,10 +41,10 @@ class Students:
         with open(path, 'r') as file:
             for line in file:
                 parts = line.strip().split(',')
-                if len(parts) == 3:
-                    student_data = {
-                        'name': parts[0],
-                        'surname': parts[1],
-                        'presence': parts[2]
-                    }
-                    Students.students.append(student_data)
+                if len(parts) != 3 or parts[2] not in ["present", "absent"]:
+                    raise ValueError("Invalid file format")
+                Students.students.append({
+                    'name': parts[0].strip(),
+                    'surname': parts[1].strip(),
+                    'presence': parts[2].strip()
+                })
