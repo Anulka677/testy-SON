@@ -42,7 +42,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Create TODO issues
-        uses: alstr/todo-to-issue-action@v2
+        uses: alstr/todo-to-issue-action@v1.4
         with:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TODO_PATTERN: '# TODO:'

@@ -5,6 +5,7 @@ from presence import Presence
 
 TEST_FILE_PATH = "test_students.txt"
 
+
 class TestONStudents:
 
     def test_add_student_success(self):
@@ -16,7 +17,9 @@ class TestONStudents:
         Students.add_student(student1)
 
         # then
-        expected = [{"name": "Ada", "surname": "Browska", "presence": Presence.present()}]
+        expected = [
+            {"name": "Ada", "surname": "Browska", "presence": Presence.present()}
+        ]
         assert Students.students == expected
 
     def test_edit_presence_success(self):
@@ -29,7 +32,9 @@ class TestONStudents:
         Students.edit_presence(student1, Presence.absent())
 
         # then
-        expected = [{"name": "Ada", "surname": "Browska", "presence": Presence.absent()}]
+        expected = [
+            {"name": "Ada", "surname": "Browska", "presence": Presence.absent()}
+        ]
         assert Students.students == expected
 
     def test_export_to_txt_success(self):
@@ -45,7 +50,7 @@ class TestONStudents:
 
         # then
         assert os.path.exists(TEST_FILE_PATH)
-        with open(TEST_FILE_PATH, 'r') as f:
+        with open(TEST_FILE_PATH, "r") as f:
             lines = f.readlines()
         expected = "Ada,Browska,present\nKasia,Browska,absent\n"
         assert "".join(lines) == expected
@@ -53,7 +58,7 @@ class TestONStudents:
     def test_import_from_txt_success(self):
         # given
         Students.students = []
-        with open(TEST_FILE_PATH, 'w') as f:
+        with open(TEST_FILE_PATH, "w") as f:
             f.write("Ada,Browska,present\nKasia,Browska,absent\n")
 
         # when
@@ -62,7 +67,7 @@ class TestONStudents:
         # then
         expected = [
             {"name": "Ada", "surname": "Browska", "presence": "present"},
-            {"name": "Kasia", "surname": "Browska", "presence": "absent"}
+            {"name": "Kasia", "surname": "Browska", "presence": "absent"},
         ]
         assert Students.students == expected
 
@@ -88,15 +93,15 @@ class TestONStudents:
     def test_export_to_read_only_file(self):
         # given
         read_only_path = "read_only_test.txt"
-        with open(read_only_path, 'w') as f:
+        with open(read_only_path, "w") as f:
             f.write("")
-        os.chmod(read_only_path, 0o400)  #read-only file
+        os.chmod(read_only_path, 0o400)  # read-only file
 
         # when / then
         with pytest.raises(PermissionError):
             Students.export_to_txt(read_only_path)
 
-        os.chmod(read_only_path, 0o600)  #restore permissions
+        os.chmod(read_only_path, 0o600)  # restore permissions
         os.remove(read_only_path)
 
     def test_import_nonexistent_file(self):
@@ -109,7 +114,7 @@ class TestONStudents:
 
     def test_import_empty_file(self):
         # given
-        with open(TEST_FILE_PATH, 'w') as f:
+        with open(TEST_FILE_PATH, "w") as f:
             f.write("")
 
         # when
@@ -120,7 +125,7 @@ class TestONStudents:
 
     def test_import_invalid_format(self):
         # given
-        with open(TEST_FILE_PATH, 'w') as f:
+        with open(TEST_FILE_PATH, "w") as f:
             f.write("Invalid,Format,Here")
 
         # when / then
